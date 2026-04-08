@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TicketWala — Book Train Tickets on WhatsApp</title>
+  <meta name="description" content="Book IRCTC train tickets by simply sending a WhatsApp message. No portal. No captchas. Just chat." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green: #25D366;
+      --green-dark: #1ebe57;
+      --orange: #FF6B35;
+      --orange-light: #fff3ee;
+      --dark: #0F172A;
+      --dark2: #1E293B;
+      --text: #334155;
+      --muted: #64748B;
+      --border: #E2E8F0;
+      --bg: #F8FAFC;
+      --white: #ffffff;
+      --radius: 16px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 48px rgba(0,0,0,0.12);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ─── NAVBAR ─────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--dark);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--green);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--dark); }
+
+    .nav-cta {
+      background: var(--green);
+      color: white !important;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: 600 !important;
+      transition: background 0.2s, transform 0.15s !important;
+    }
+
+    .nav-cta:hover {
+      background: var(--green-dark) !important;
+      transform: translateY(-1px);
+      color: white !important;
+    }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--dark);
+      border-radius: 2px;
+      transition: 0.3s;
+    }
+
+    /* ─── HERO ───────────────────────────────────────────── */
+    .hero {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 80px 24px 64px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--orange-light);
+      color: var(--orange);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 50px;
+      margin-bottom: 20px;
+      letter-spacing: 0.02em;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900;
+      line-height: 1.15;
+      color: var(--dark);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 span { color: var(--green); }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin-bottom: 32px;
+      max-width: 480px;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--green);
+      color: white;
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 16px rgba(37,211,102,0.35);
+    }
+
+    .hero-cta:hover {
+      background: var(--green-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(37,211,102,0.4);
+    }
+
+    .trust-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    .trust-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .trust-badge svg { flex-shrink: 0; }
+
+    /* WhatsApp Chat Mockup */
+    .chat-mockup {
+      background: #E5DDD5;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      max-width: 340px;
+      margin: 0 auto;
+    }
+
+    .chat-header {
+      background: #075E54;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .chat-avatar {
+      width: 40px;
+      height: 40px;
+      background: var(--green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .chat-header-info { flex: 1; }
+    .chat-header-name { color: white; font-weight: 700; font-size: 0.95rem; }
+    .chat-header-status { color: rgba(255,255,255,0.7); font-size: 0.75rem; }
+
+    .chat-body {
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 320px;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23000000' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+    }
+
+    .msg {
+      max-width: 82%;
+      padding: 9px 13px;
+      border-radius: 12px;
+      font-size: 0.83rem;
+      line-height: 1.5;
+      position: relative;
+    }
+
+    .msg-time {
+      font-size: 0.65rem;
+      opacity: 0.6;
+      margin-top: 4px;
+      text-align: right;
+    }
+
+    .msg.sent {
+      background: #DCF8C6;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+      color: #1a1a1a;
+    }
+
+    .msg.received {
+      background: white;
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+      color: #1a1a1a;
+    }
+
+    .msg.received .msg-sender {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 2px;
+    }
+
+    .msg.system-note {
+      background: rgba(0,0,0,0.06);
+      align-self: center;
+      border-radius: 8px;
+      font-size: 0.72rem;
+      color: #555;
+      padding: 5px 12px;
+      max-width: 100%;
+      text-align: center;
+    }
+
+    .typing {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      padding: 10px 14px;
+      background: white;
+      border-radius: 12px;
+      border-bottom-left-radius: 4px;
+      align-self: flex-start;
+      width: fit-content;
+    }
+
+    .typing span {
+      width: 6px;
+      height: 6px;
+      background: #aaa;
+      border-radius: 50%;
+      animation: bounce 1.2s infinite;
+    }
+
+    .typing span:nth-child(2) { animation-delay: 0.2s; }
+    .typing span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes bounce {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-4px); }
+    }
+
+    /* ─── SECTION COMMON ─────────────────────────────────── */
+    section { padding: 80px 24px; }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 16px;
+      line-height: 1.25;
+    }
+
+    .section-sub {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 560px;
+    }
+
+    /* ─── PROBLEM ────────────────────────────────────────── */
+    .problem-section {
+      background: var(--dark);
+    }
+
+    .problem-section .section-label { color: #FF6B35; }
+    .problem-section .section-title { color: white; }
+    .problem-section .section-sub { color: rgba(255,255,255,0.5); }
+
+    .problem-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 48px;
+    }
+
+    .problem-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+
+    .problem-emoji { font-size: 2rem; margin-bottom: 16px; }
+
+    .problem-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 8px;
+    }
+
+    .problem-card p {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.6;
+    }
+
+    /* ─── HOW IT WORKS ───────────────────────────────────── */
+    .hiw-section { background: white; }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: 56px;
+      position: relative;
+    }
+
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 36px;
+      left: calc(16.66% + 20px);
+      right: calc(16.66% + 20px);
+      height: 2px;
+      background: linear-gradient(90deg, var(--green), var(--orange));
+      z-index: 0;
+    }
+
+    .step {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-num {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin: 0 auto 20px;
+      border: 3px solid white;
+      box-shadow: var(--shadow);
+    }
+
+    .step:nth-child(1) .step-num { background: linear-gradient(135deg, #25D366, #1ebe57); }
+    .step:nth-child(2) .step-num { background: linear-gradient(135deg, #FF6B35, #e85c22); }
+    .step:nth-child(3) .step-num { background: linear-gradient(135deg, #6366F1, #4f46e5); }
+
+    .step h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 10px;
+    }
+
+    .step p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ─── FEATURES ───────────────────────────────────────── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 48px;
+    }
+
+    .feature-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+    }
+
+    .feature-card:nth-child(1) .feature-icon { background: #DCFCE7; }
+    .feature-card:nth-child(2) .feature-icon { background: #FFF3EE; }
+    .feature-card:nth-child(3) .feature-icon { background: #EDE9FE; }
+    .feature-card:nth-child(4) .feature-icon { background: #FEF9C3; }
+    .feature-card:nth-child(5) .feature-icon { background: #DBEAFE; }
+    .feature-card:nth-child(6) .feature-icon { background: #FCE7F3; }
+
+    .feature-card h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ─── PRICING ────────────────────────────────────────── */
+    .pricing-section { background: white; }
+
+    .pricing-card {
+      max-width: 480px;
+      margin: 48px auto 0;
+      background: linear-gradient(135deg, var(--dark), var(--dark2));
+      border-radius: 24px;
+      padding: 48px;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pricing-card::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(37,211,102,0.15), transparent 70%);
+    }
+
+    .pricing-card::after {
+      content: '';
+      position: absolute;
+      bottom: -60px;
+      left: -60px;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(255,107,53,0.12), transparent 70%);
+    }
+
+    .pricing-pill {
+      display: inline-block;
+      background: rgba(37,211,102,0.15);
+      color: var(--green);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 50px;
+      margin-bottom: 24px;
+    }
+
+    .pricing-amount {
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: white;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .pricing-amount sup { font-size: 1.5rem; vertical-align: super; }
+    .pricing-amount span { font-size: 1.1rem; font-weight: 500; opacity: 0.6; }
+
+    .pricing-desc {
+      color: rgba(255,255,255,0.55);
+      font-size: 0.9rem;
+      margin-bottom: 32px;
+    }
+
+    .pricing-features {
+      list-style: none;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .pricing-features li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: rgba(255,255,255,0.8);
+      font-size: 0.88rem;
+    }
+
+    .pricing-features .check {
+      width: 20px;
+      height: 20px;
+      background: rgba(37,211,102,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 0.7rem;
+    }
+
+    .pricing-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.82rem;
+      margin-top: 20px;
+    }
+
+    /* ─── CTA SECTION ────────────────────────────────────── */
+    .cta-section {
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(37,211,102,0.08), transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-tag {
+      display: inline-block;
+      background: rgba(255,107,53,0.15);
+      color: var(--orange);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 50px;
+      margin-bottom: 20px;
+    }
+
+    .cta-section h2 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 900;
+      color: white;
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    .cta-section p {
+      color: rgba(255,255,255,0.5);
+      font-size: 1rem;
+      max-width: 480px;
+      margin: 0 auto 36px;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--green);
+      color: white;
+      text-decoration: none;
+      padding: 16px 32px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 24px rgba(37,211,102,0.35);
+    }
+
+    .cta-btn:hover {
+      background: var(--green-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(37,211,102,0.45);
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────────── */
+    footer {
+      background: var(--dark);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 48px 24px 32px;
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 40px;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .footer-logo {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .footer-tagline {
+      color: rgba(255,255,255,0.4);
+      font-size: 0.85rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: rgba(255,255,255,0.45);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: white; }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-bottom p {
+      color: rgba(255,255,255,0.3);
+      font-size: 0.8rem;
+    }
+
+    .footer-bottom a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    .footer-bottom a:hover { color: white; }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        background: white;
+        border-bottom: 1px solid var(--border);
+        padding: 16px 24px;
+        gap: 16px;
+        z-index: 99;
+      }
+      .nav-hamburger { display: flex; }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 48px 24px 40px;
+        gap: 40px;
+        text-align: center;
+      }
+      .hero p { margin: 0 auto 32px; }
+      .trust-badges { justify-content: center; }
+      .chat-mockup { max-width: 300px; }
+
+      .problem-cards,
+      .steps,
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .steps::before { display: none; }
+
+      .pricing-card { padding: 32px 24px; }
+
+      .footer-top { flex-direction: column; }
+    }
+
+    @media (max-width: 480px) {
+      section { padding: 60px 20px; }
+      .pricing-amount { font-size: 2.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── NAVBAR ─────────────────────────────────────────── -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="logo">
+        <div class="logo-icon">🚂</div>
+        TicketWala
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#how-it-works">How it Works</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li>
+          <a href="https://wa.me/917XXXXXXXXX?text=Hi%20TicketWala%21%20I%27d%20like%20to%20know%20more." class="nav-cta" target="_blank" rel="noopener">
+            WhatsApp Us
+          </a>
+        </li>
+      </ul>
+      <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ───────────────────────────────────────────── -->
+  <section style="padding: 0; background: white;">
+    <div class="hero">
+      <div class="hero-content">
+        <div class="hero-badge">
+          🇮🇳 Built for India
+        </div>
+        <h1>Book Train Tickets on <span>WhatsApp</span></h1>
+        <p>TicketWala connects to your IRCTC account and books tickets for you — just tell it where you want to go. No portal. No captchas. No stress.</p>
+        <a href="https://wa.me/917XXXXXXXXX?text=Hi%20TicketWala%21%20I%27d%20like%20to%20know%20more." class="hero-cta" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Chat with TicketWala
+        </a>
+        <div class="trust-badges">
+          <div class="trust-badge">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#25D366" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            Powered by Claude AI
+          </div>
+          <div class="trust-badge">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#25D366" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            DPDP Act Compliant
+          </div>
+          <div class="trust-badge">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#25D366" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            Data stays in India
+          </div>
+        </div>
+      </div>
+
+      <!-- WhatsApp Chat Mockup -->
+      <div>
+        <div class="chat-mockup">
+          <div class="chat-header">
+            <div class="chat-avatar">🚂</div>
+            <div class="chat-header-info">
+              <div class="chat-header-name">TicketWala</div>
+              <div class="chat-header-status">online</div>
+            </div>
+          </div>
+          <div class="chat-body">
+            <div class="msg system-note">Today, 9:48 AM</div>
+            <div class="msg sent">
+              Delhi to Mumbai this Friday, sleeper class, 2 passengers
+              <div class="msg-time">9:48 ✓✓</div>
+            </div>
+            <div class="msg received">
+              <div class="msg-sender">TicketWala</div>
+              Got it! 🔍 Searching trains from NDLS → CSTM on Friday, 11 Apr...
+              <div class="msg-time">9:48</div>
+            </div>
+            <div class="msg received">
+              <div class="msg-sender">TicketWala</div>
+              Found 3 good options:<br/><br/>
+              🚂 <strong>Rajdhani Express</strong> — 16:25 → 08:15+1<br/>
+              SL: ₹855/person · 2 seats available<br/><br/>
+              Reply <strong>1</strong> to book Rajdhani ✅
+              <div class="msg-time">9:48</div>
+            </div>
+            <div class="msg sent">
+              1
+              <div class="msg-time">9:49 ✓✓</div>
+            </div>
+            <div class="typing">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PROBLEM ────────────────────────────────────────── -->
+  <section class="problem-section">
+    <div class="container">
+      <div class="section-label">The Problem</div>
+      <h2 class="section-title">Booking a train ticket<br/>shouldn't feel like filing taxes</h2>
+      <p class="section-sub">The IRCTC portal is outdated, unpredictable, and mobile-unfriendly. You know the struggle.</p>
+      <div class="problem-cards">
+        <div class="problem-card">
+          <div class="problem-emoji">😤</div>
+          <h3>Captchas at 10 AM</h3>
+          <p>Just when you need to book fast, IRCTC throws a blurry captcha at you — and times out while you squint at it.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-emoji">🤯</div>
+          <h3>20 steps for one ticket</h3>
+          <p>Login, search, select train, select class, add passengers, fill details, pay — and start over if it times out.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-emoji">📵</div>
+          <h3>App crashes when it matters</h3>
+          <p>The IRCTC app decides to crash or hang precisely when seat availability is at its peak. Every. Single. Time.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── HOW IT WORKS ───────────────────────────────────── -->
+  <section class="hiw-section" id="how-it-works">
+    <div class="container">
+      <div style="text-align: center;">
+        <div class="section-label">How it Works</div>
+        <h2 class="section-title">Three steps and you're done</h2>
+        <p class="section-sub" style="margin: 0 auto;">No app to download. No new account. Just WhatsApp — which you already have.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">🔗</div>
+          <h3>Connect Once</h3>
+          <p>Securely link your IRCTC account to TicketWala in one go. Your credentials are encrypted and never stored in plaintext.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">💬</div>
+          <h3>Message Naturally</h3>
+          <p>Tell TicketWala where you're going — in Hindi or English. "Mumbai to Pune Friday evening, 2A" is all it takes.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">✅</div>
+          <h3>Ticket Booked</h3>
+          <p>TicketWala confirms options, you pick one, and your booking confirmation lands right in the same chat.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FEATURES ───────────────────────────────────────── -->
+  <section id="features" style="background: var(--bg);">
+    <div class="container">
+      <div class="section-label">Features</div>
+      <h2 class="section-title">Everything you'd want,<br/>nothing you don't</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h3>Natural Language Booking</h3>
+          <p>Type like you'd text a friend. "Delhi to Jaipur Sunday morning, window seat" — TicketWala figures out the rest.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🇮🇳</div>
+          <h3>Hindi + English Support</h3>
+          <p>Seamlessly understands Hinglish. Whether you say "do ticket chahiye" or "2 tickets please", it just works.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h3>Secure by Design</h3>
+          <p>Your IRCTC credentials are encrypted with AWS KMS. Never logged. Never stored in plaintext. Never visible to anyone.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📍</div>
+          <h3>India-Only Servers</h3>
+          <p>All your data lives on AWS Mumbai. Fully compliant with India's DPDP Act — your data never leaves the country.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Instant Confirmation</h3>
+          <p>Once you confirm, your booking is placed and the PNR lands in the same WhatsApp chat — no email hunting needed.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔎</div>
+          <h3>Smart Station Search</h3>
+          <p>Type "Bombay", "VT", or "Mumbai Central" — TicketWala knows exactly which station you mean.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PRICING ────────────────────────────────────────── -->
+  <section class="pricing-section" id="pricing">
+    <div class="container" style="text-align: center;">
+      <div class="section-label">Pricing</div>
+      <h2 class="section-title">Simple. Transparent. Fair.</h2>
+      <p class="section-sub" style="margin: 0 auto;">No subscription. No hidden fees. Pay only when you book.</p>
+
+      <div class="pricing-card">
+        <div class="pricing-pill">Convenience Fee</div>
+        <div class="pricing-amount">
+          <sup>₹</sup>25<span>–₹40</span>
+        </div>
+        <div class="pricing-desc">per booking · paid via UPI on WhatsApp</div>
+        <ul class="pricing-features">
+          <li><span class="check">✓</span> IRCTC ticket cost paid separately & directly to IRCTC</li>
+          <li><span class="check">✓</span> UPI payment link sent right on WhatsApp — no card needed</li>
+          <li><span class="check">✓</span> No subscription, no monthly charges</li>
+          <li><span class="check">✓</span> Pay only on successful booking</li>
+        </ul>
+      </div>
+      <p class="pricing-note">The IRCTC ticket fare is collected directly by IRCTC and is not included in the convenience fee.</p>
+    </div>
+  </section>
+
+  <!-- ─── CTA SECTION ───────────────────────────────────── -->
+  <section class="cta-section">
+    <div class="container" style="position: relative; z-index: 1;">
+      <div class="cta-tag">Coming Soon</div>
+      <h2>TicketWala is almost here</h2>
+      <p>We're putting the finishing touches on the product. Reach out on WhatsApp to get early access or ask us anything.</p>
+      <a href="https://wa.me/917XXXXXXXXX?text=Hi%20TicketWala%21%20I%27d%20like%20early%20access." class="cta-btn" target="_blank" rel="noopener">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Get Early Access on WhatsApp
+      </a>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─────────────────────────────────────────── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <a href="#" class="footer-logo">
+            <div class="logo-icon" style="width:32px;height:32px;font-size:1rem;">🚂</div>
+            TicketWala
+          </a>
+          <div class="footer-tagline">Book train tickets on WhatsApp.<br/>No portal. No hassle.</div>
+        </div>
+        <ul class="footer-links">
+          <li><a href="#how-it-works">How it Works</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="mailto:sharma18yash.ys@gmail.com">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-bottom">
+        <p>Made with ❤️ in India &nbsp;·&nbsp; © 2026 TicketWala</p>
+        <p>Built by <a href="mailto:sharma18yash.ys@gmail.com">Yash Sharma</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile nav toggle
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+    });
+
+    // Close nav on link click (mobile)
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => navLinks.classList.remove('open'));
+    });
+
+    // Smooth scroll offset for sticky nav
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          window.scrollTo({ top: target.offsetTop - 72, behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
